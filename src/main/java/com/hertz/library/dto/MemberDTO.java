@@ -16,4 +16,6 @@ public class MemberDTO {
     private String firstName, lastName, address;
 
     private Set<BookDTO> books;
+
+    private boolean accountLocked;
 }

@@ -32,4 +32,6 @@ public class Member extends Person {
     @OneToMany(mappedBy = "member")
     private Set<Book> books;
 
+    @Column(name = "account_locked")
+    private boolean accountLocked;
 }

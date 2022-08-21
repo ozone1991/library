@@ -73,6 +73,11 @@ public class BookService {
         Optional<BookDTO> book = findById(bookId);
         validateMemberCanReturnBook(member, book);
 
+        if (member.get().getBooks().size() == 1 && member.get().isAccountLocked()) {
+            member.get().setAccountLocked(false);
+            memberService.save(member.get());
+        }
+
         Book bookToUpdate = bookMapper.toEntity(book.get());
         bookToUpdate.setReturnDate(null);
 
@@ -84,12 +89,16 @@ public class BookService {
             throw new MemberDoesNotExistException();
         } else if (book.isEmpty()) {
             throw new BookDoesNotExistException();
-        } else if (member.get().getBooks().size() >= 3) {
-            throw new TooManyBooksBorrowedException();
-        } else if (memberHasOutstandingBooksLoaned(member.get().getId())) {
-            throw new MemberHasOutstandingLoanException();
         } else if (bookAlreadyLoaned(book.get().getId())) {
             throw new BookAlreadyLoanedException();
+        } else if (member.get().getBooks().size() >= 3) {
+            throw new TooManyBooksBorrowedException();
+        } else if (member.get().isAccountLocked()) {
+            throw new MemberHasOutstandingLoanException();
+        } else if (memberHasOutstandingBooksLoaned(member.get().getId())) {
+            member.get().setAccountLocked(true);
+            memberService.save(member.get());
+            throw new MemberHasOutstandingLoanException();
         }
     }
 

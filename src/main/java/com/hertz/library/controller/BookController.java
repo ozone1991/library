@@ -5,6 +5,7 @@ import com.hertz.library.exceptions.BookAlreadyLoanedException;
 import com.hertz.library.exceptions.BookDoesNotExistException;
 import com.hertz.library.exceptions.MemberDoesNotExistException;
 import com.hertz.library.exceptions.MemberHasNotBorrowedBookException;
+import com.hertz.library.exceptions.MemberHasOutstandingLoanException;
 import com.hertz.library.exceptions.TooManyBooksBorrowedException;
 import com.hertz.library.service.BookService;
 import com.hertz.library.service.MemberService;
@@ -113,6 +114,11 @@ public class BookController {
     @ExceptionHandler(value = TooManyBooksBorrowedException.class)
     public ResponseEntity<String> handleTooManyBooksBorrowedException() {
         return new ResponseEntity<>("Member has borrowed too many books and cannot borrow any more until a book is returned", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = MemberHasOutstandingLoanException.class)
+    public ResponseEntity<String> handleMemberHasOutstandingLoanException() {
+        return new ResponseEntity<>("Member has an outstanding book loaned and cannot borrow any more books until all books returned", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
 }
