@@ -14,8 +14,10 @@ The system allows members to loan and return books. As part of this task, there 
 4. There is only 1 copy of each book
 5. Each book can have ore than one category
 
-The application is built using Java 17 and Spring Boot. The application can be run using the LibraryApplication class. For development, I used a local Postgres instance. I set up a library DB in Postgres and also the libraryuser for this purpose. Connection details for the DB can be found in application.properties and can also be changed to run with other DBs instances here.
+When a book is loaned, I have set a default "loan" period of 7 days. If the book is not returned in this time and a member then attempts to loan another book, their account will be locked until all books have been returned.
 
-I have also created a Postman workspace which contains the various endpoints included within the application. This can be found at:
+The application is built using Java 17 and Spring Boot. I used mapstruct for handling the mapper classes between entites and DTOs. Using mapstruct helped to reduce a lot of boiler plate code similar to using lombok. The application can be run using the LibraryApplication class. For development, I used a local Postgres instance. I set up a library DB in Postgres and also the libraryuser for this purpose. Connection details for the DB can be found in application.properties and can also be changed to run with other DBs instances here.
+
+I have also created a Postman workspace which contains the various endpoints included within the application. When loaning or returning a book, the member id is passed as a header to the endpoint and the book id as a path variable. The Postman workspace can be found at:
 
 https://www.postman.com/ozone1991/workspace/library
